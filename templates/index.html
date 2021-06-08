@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Tornado Chat Demo</title>
+    <link rel="stylesheet" href="/static/material.min.css">
+    <link href="/static/font/MaterialDesign.css"
+          rel="stylesheet">
+</head>
+<body>
+<!-- Uses a transparent header that draws on top of the layout's background -->
+<style>
+.demo-layout-transparent {
+    background: #ee0979;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #ff6a00, #ee0979);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #ff6a00, #ee0979); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+.demo-layout-transparent .mdl-layout__header,
+.demo-layout-transparent .mdl-layout__drawer-button {
+  /* This background is dark, so we set text to white. Use 87% black instead if
+     your background is light. */
+  color: white;
+}
+.trooper-mdl-navigation__divider {
+    padding: 16px 40px;
+    color: #757575;
+    background: #eeeeee
+}
+.trooper-mdl-navigation {
+    padding-top: 0px !important;
+}
+</style>
+
+<div class="demo-layout-transparent mdl-layout mdl-js-layout mdl-layout--fixed-drawer" >
+    <div class="mdl-layout__drawer">
+        <span class="mdl-layout-title">Trooper</span>
+        <nav class="trooper-mdl-navigation mdl-navigation">
+            <div class="trooper-mdl-navigation__divider">KEY MANAGEMENT</div>
+            <a class="mdl-navigation__link" href="">Generate</a>
+            <a class="mdl-navigation__link" href="">Distribute</a>
+            <a class="mdl-navigation__link" href="">Download</a>
+            <div class="trooper-mdl-navigation__divider">DEPLOYMENT</div>
+            <a class="mdl-navigation__link" href="">Stop</a>
+            <a class="mdl-navigation__link" href="">Start</a>
+        </nav>
+    </div>
+    <main class="mdl-layout__content">
+        <input type="button" value="Start" onclick="start();"/>
+        <input type="button" value="Stop" onclick="stop();"/>
+    </main>
+</div>
+</body>
+<script type="text/javascript">
+  function getCookie(name) {
+    var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
+    return r ? r[1] : undefined;
+  }
+
+  function getOptions() {
+    return {
+      method: "POST",
+      headers: {
+        "X-XSRFToken": getCookie("_xsrf")
+      }
+    }
+  }
+
+  function stop() {
+    options = getOptions()
+    fetch("/api/v1/stop", options)
+      .then(response => response.text())
+      .then(text => console.log(text))
+  }
+
+  function start() {
+    options = getOptions()
+    fetch("/api/v1/start", options)
+      .then(response => response.text())
+      .then(text => console.log(text))
+  }
+
+  function status() {
+    options = getOptions()
+    fetch("/api/v1/status", options)
+      .then(response => response.text())
+      .then(text => console.log(text))
+  }
+
+  window.setInterval(status, 1000)
+
+
+
+
+
+</script>
+
+<script src="/static/material.min.js"></script>
+</html>
